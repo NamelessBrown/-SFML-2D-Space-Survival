@@ -22,6 +22,9 @@ Game::~Game()
 	}
 
 	delete mWindow;
+
+	std::cout << "Press [Enter] to continue...\n";
+	std::cin.get();
 }
 
 void Game::Run()

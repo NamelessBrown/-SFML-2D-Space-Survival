@@ -78,7 +78,7 @@ void Game::SpawnRocks()
 
 	for (unsigned i = 0; i < mRocks.size(); ++i)
 	{
-		if (mRocks[i]->getRock().getGlobalBounds().top > mWindow->getSize().y)
+		if (mRocks[i]->getRock().getGlobalBounds().top > mWindowView.getSize().y)
 		{
 			mRocks.erase(mRocks.begin() + i);
 			std::cout << "Deleted rock...\n";
@@ -99,6 +99,14 @@ void Game::RockCollion()
 			std::cout << "Your total points were -> " << mPlayerPoints << '\n';
 		}
 	}
+
+	/* Game over if the player goes off the off the screen */
+	if (mPlayer.getSprite().getGlobalBounds().top > mWindowView.getSize().y)
+	{
+		gameOver = true;
+		std::cout << "Your total points were -> " << mPlayerPoints << '\n';
+	}
+
 }
 
 void Game::Render()

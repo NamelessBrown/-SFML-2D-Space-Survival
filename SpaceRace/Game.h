@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Player.h"
+#include <iostream>
+#include <sstream>
 
 class Game
 {
@@ -18,10 +20,13 @@ private:
 	sf::RenderWindow* mWindow;
 	sf::Event mEvent;
 	sf::View mWindowView;
+	sf::Text mText;
+	sf::Font mFont;
 
 	Player mPlayer;
 	std::vector<Rocks*> mRocks;
 
+	int mPlayerPoints;
 	int mSpawnTimer;
 	int mSpawnTimerMax;
 	bool gameOver;

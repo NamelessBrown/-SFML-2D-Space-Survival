@@ -1,11 +1,16 @@
 #include "Game.h"
 
 Game::Game()
-	:mEvent(sf::Event()), mSpawnTimer(0), mSpawnTimerMax(100), gameOver(false)
+	:mEvent(sf::Event()), mSpawnTimer(0), mSpawnTimerMax(50), gameOver(false), mPlayerPoints(0)
 {
 	mWindow = new sf::RenderWindow(sf::VideoMode(500, 500), "SpaceDodgers", sf::Style::Close | sf::Style::Titlebar);
 	mWindow->setFramerateLimit(60); //Sets the framrate to 60, so I don't have to do calculations.
-	mWindowView.setCenter(mPlayer.getSprite().getPosition()); 
+	mWindowView.setCenter(mPlayer.getSprite().getPosition());
+
+	mFont.loadFromFile("Font/256BYTES.ttf");
+	mText.setFont(mFont);
+	mText.setCharacterSize(50);
+	mText.setStyle(sf::Text::Italic | sf::Text::Bold);
 }
 
 Game::~Game()
@@ -47,11 +52,17 @@ void Game::Update()
 	mPlayer.Update();
 	SpawnRocks();
 	RockCollion();
+
+	std::stringstream ss;
+
+	ss << "Points: " << mPlayerPoints;
+
+	mText.setString(ss.str());
 }
 
 void Game::SpawnRocks()
 {
-	/* Spawns the rocks every time SpawnTimer reaches 100 */
+	/* Spawns the rocks every time SpawnTimer reaches 100,  also deletes if the Rocks are out of Screen */
 
 	if (mSpawnTimer > mSpawnTimerMax)
 	{
@@ -64,6 +75,17 @@ void Game::SpawnRocks()
 	{
 		mSpawnTimer++;
 	}
+
+	for (unsigned i = 0; i < mRocks.size(); ++i)
+	{
+		if (mRocks[i]->getRock().getGlobalBounds().top > mWindow->getSize().y)
+		{
+			mRocks.erase(mRocks.begin() + i);
+			std::cout << "Deleted rock...\n";
+			++mPlayerPoints;
+		}
+	}
+
 }
 
 void Game::RockCollion()
@@ -74,6 +96,7 @@ void Game::RockCollion()
 		if (mPlayer.getSprite().getGlobalBounds().contains(i->getRock().getPosition()))
 		{
 			gameOver = true;
+			std::cout << "Your total points were -> " << mPlayerPoints << '\n';
 		}
 	}
 }
@@ -91,6 +114,8 @@ void Game::Render()
 	{
 		i->Render(*mWindow);
 	}
+
+	mWindow->draw(mText);
 
 	mWindow->display();
 

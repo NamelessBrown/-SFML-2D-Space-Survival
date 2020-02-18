@@ -16,6 +16,7 @@ public:
 	const sf::CircleShape& getRock() const { return mRock; }
 private:
 	sf::CircleShape mRock;
+	float mSpeed;
 
 };
 

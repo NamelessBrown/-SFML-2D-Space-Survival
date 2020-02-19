@@ -22,6 +22,7 @@ private:
 	sf::View mWindowView;
 	sf::Text mText;
 	sf::Font mFont;
+	sf::Music* mMusic;
 
 	Player mPlayer;
 	std::vector<Rocks*> mRocks;

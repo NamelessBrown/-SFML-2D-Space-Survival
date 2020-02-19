@@ -11,10 +11,20 @@ Game::Game()
 	mText.setFont(mFont);
 	mText.setCharacterSize(50);
 	mText.setStyle(sf::Text::Italic | sf::Text::Bold);
+
+	mMusic = new sf::Music();
+
+	mMusic->openFromFile("Sound/KevinMacLeod _MysticForce.ogg");
+	mMusic->play();
+	mMusic->setLoop(true);
 }
 
 Game::~Game()
 {
+	mMusic->stop();
+
+	delete mMusic;
+
 	//Delete everything in the vector. Then, get rid of the vector
 	for (auto* i : mRocks)
 	{
@@ -84,7 +94,6 @@ void Game::SpawnRocks()
 		if (mRocks[i]->getRock().getGlobalBounds().top > mWindowView.getSize().y)
 		{
 			mRocks.erase(mRocks.begin() + i);
-			std::cout << "Deleted rock...\n";
 			++mPlayerPoints;
 		}
 	}
